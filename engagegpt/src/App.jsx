@@ -1,72 +1,51 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vitejs.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.jsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
-
-// export default App
-
-
-// src/App.js
-import React, { useState } from 'react';
+import { useState } from 'react';
 import getChatGptResponse from './ChatGpt';
+import './App.css';
 
 function App() {
   const [question, setQuestion] = useState('');
-  const [response, setResponse] = useState('');
+  const [response, setResponse] = useState(null);
 
   const handleQuestionChange = (event) => {
     setQuestion(event.target.value);
   };
 
   const handleAsk = async () => {
-    const answer = await getChatGptResponse(question);
-    setResponse(answer);
+    try {
+      const answer = await getChatGptResponse(question);
+      setResponse(answer);
+    } catch (error) {
+      console.error('Erro ao obter resposta:', error);
+    }
   };
 
   return (
-    <div>
-      <h1>EngageGPT</h1>
-      <input
-        type="text"
-        placeholder="Digite sua pergunta aqui..."
-        value={question}
-        onChange={handleQuestionChange}
-      />
-      <button onClick={handleAsk}>Perguntar</button>
-      {response && (
-        <div>
-          <h2>Resposta:</h2>
-          <p>{response}</p>
-        </div>
+    <div className='root'>
+    <img className='logo' src='/logo.png' alt="EngageGPT Logo"/>
+      <h1 className='title'>Designers de plantão, criem um design bonito, dark mode pls</h1>
+      <div className='container'>
+        <input 
+          className='inputGPT'
+          type="text"
+          placeholder="Digite sua pergunta aqui..."
+          value={question}
+          onChange={handleQuestionChange}
+        />
+        <button onClick={handleAsk} style={{ marginBottom: '20px' }}>Perguntar</button>
+      </div>
+      {response && response.data && response.data[0] && (
+          <div style={{
+            backgroundColor: '#0A3D62',
+            borderRadius: '10px',
+            padding: '15px',
+            margin: '10px auto',
+            maxWidth: '80%',
+            color: 'white',
+            textAlign: 'center'
+          }}>
+            <h2>Resposta:</h2>
+            <p>{response.data[0][""]}</p>
+          </div>
       )}
     </div>
   );
