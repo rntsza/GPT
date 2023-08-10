@@ -23,12 +23,7 @@ const getChatGptResponse = async (question) => {
       },
     });
     
-    console.log("chegou no front: ", response)
-    // console.log("chegou no front 2: ", response.data[0])
-    // if (!response.data.choices || !response.data.choices[0]) {
-    //   throw new Error('Nenhuma resposta encontrada');
-    // }
-    
+    console.log("chegou no front: ", response)   
     return response;
   } catch (error) {
     console.error('Erro ao obter resposta do ChatGPT:', error);
